@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import "./map.css";
 import map from "../../assets/map.png"
-const Map = () => {
+const Map = ({ onMarkerDragEnd }) => {
     const markerRef = useRef(null);
 
     const dragElement = (elmnt) => {
@@ -21,8 +21,21 @@ const Map = () => {
             pos2 = pos4 - e.clientY;
             pos3 = e.clientX;
             pos4 = e.clientY;
-            elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
-            elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+
+            const container = document.querySelector(".map-container");
+            const markerWidth = elmnt.offsetWidth;
+            const markerHeight = elmnt.offsetHeight;
+
+            let newY = elmnt.offsetTop - pos2;
+            let newX = elmnt.offsetLeft - pos1;
+            newY = Math.max(newY, 0);
+            newX = Math.max(newX, 0);
+            newY = Math.min(newY, container.offsetHeight - markerHeight);
+            newX = Math.min(newX, container.offsetWidth - markerWidth);
+
+            elmnt.style.top = newY + "px";
+            elmnt.style.left = newX + "px";
+            onMarkerDragEnd({ x: newY, y: newX })
         };
 
         const closeDragElement = () => {
