@@ -35,15 +35,15 @@ const Map = ({ onMarkerDragEnd }) => {
 
             elmnt.style.top = newY + "px";
             elmnt.style.left = newX + "px";
-            onMarkerDragEnd({ x: newY, y: newX })
+            onMarkerDragEnd({ x: newX, y: newY })
         };
 
         const closeDragElement = () => {
             document.onmouseup = null;
             document.onmousemove = null;
         };
-        if (document.getElementById(elmnt.id + "mydiv")) {
-            document.getElementById(elmnt.id + "mydiv").onmousedown = dragMouseDown;
+        if (document.getElementById(elmnt.id + "marker")) {
+            document.getElementById(elmnt.id + "marker").onmousedown = dragMouseDown;
         } else {
             elmnt.onmousedown = dragMouseDown;
         }
@@ -64,7 +64,7 @@ const Map = ({ onMarkerDragEnd }) => {
                 className="map-image"
             />
             <div
-                id="mydiv"
+                id="marker"
                 ref={markerRef}
                 className="marker"
                 style={{ left: '0px', top: '0px' }}

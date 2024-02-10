@@ -10,7 +10,7 @@ const Header = () => {
                     <Link to="/" className="ml-2 text-xl text-neutral-800 dark:text-neutral-200">
                         <img src="https://www.fatima.edu.ph/wp-content/uploads/2021/10/olfu-logo.png" alt="logo" />
                     </Link>
-                    <div className="ml-5 flex w-[30%] items-center justify-between">
+                    <div className="ml-5 flex w-[20%] items-center justify-between">
                         <input
                             type="search"
                             className="relative m-0 block w-[1px] min-w-0 flex-auto rounded  bg-slate-200 bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-neutral-700  transition duration-200 outline-none border-none ease-in-out focus:z-[3] focus:text-neutral-700 focus:shadow-[inset_0_0_0_1px_rgb(59,113,202)]  motion-reduce:transition-none "

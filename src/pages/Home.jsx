@@ -5,18 +5,20 @@ import Map from '../components/Map/Map'
 const Home = () => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
-
+    const [image, setImage] = useState();
+    const [location, setLocation] = useState({});
     const handleMarkerDragEnd = (coordinates) => {
-        console.log('Marker coordinates:', coordinates);
+        setLocation(coordinates)
     };
+    console.log(location)
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             await axios.post('http://localhost:5000/locations/add', {
                 title,
                 description,
-                image: '/path/to/your/map/image.jpg',
-                location: { x: 0, y: 0 }
+                image,
+                location
             });
             setTitle('');
             setDescription('');
@@ -36,6 +38,9 @@ const Home = () => {
                         <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} />
                     </label>
                     <br />
+                    <label onChange={(e) => setImage(e.target.value)}>
+                        <input type="file" />
+                    </label>
                     <button type="submit">Save Location</button>
                 </form>
 
