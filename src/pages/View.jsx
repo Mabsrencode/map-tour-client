@@ -7,7 +7,7 @@ const View = () => {
     useEffect(() => {
         const fetch = async () => {
             try {
-                const response = (await axios.post(`http://localhost:4000/map/view/${_id}`)).data;
+                const response = (await axios.post(`http://localhost:4000/map/view/${_id}` || `https://olfu-server.onrender.com/map/view/${_id}`)).data;
                 setDetails(response)
             } catch (error) {
                 console.error('Error fetching data:', error.message);

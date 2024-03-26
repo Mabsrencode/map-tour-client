@@ -9,7 +9,7 @@ const Map = ({ onMarkerDragEnd, disabled, loading }) => {
     useEffect(() => {
         const getCoordinate = async () => {
             try {
-                const response = await axios.get('http://localhost:4000/map/coordinate');
+                const response = await axios.get('http://localhost:4000/map/coordinate' || "https://olfu-server.onrender.com/map/coordinate");
                 setData(response.data);
             } catch (error) {
                 console.error('Error fetching data:', error.message);

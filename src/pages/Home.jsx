@@ -9,7 +9,7 @@ const Home = () => {
         const getCoordinate = async () => {
             try {
                 setLoading(true);
-                const response = await axios.get('http://localhost:4000/map/coordinate');
+                const response = await axios.get('http://localhost:4000/map/coordinate' || "https://olfu-server.onrender.com/map/coordinate");
                 setData(response.data);
                 setLoading(false);
             } catch (error) {

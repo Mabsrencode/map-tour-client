@@ -15,7 +15,7 @@ const AddCoordinates = () => {
         e.preventDefault();
         try {
             setIsLoading(true);
-            await axios.post('http://localhost:4000/map/add', {
+            await axios.post('http://localhost:4000/map/add' || "https://olfu-server.onrender.com/map/add", {
                 title,
                 description,
                 image: image.base64,
