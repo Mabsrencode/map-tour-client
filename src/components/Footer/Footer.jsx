@@ -5,23 +5,22 @@ const Footer = () => {
         <footer className="bg-primary shadow">
             <div className="w-full max-w-screen-xl mx-auto p-4 md:py-8">
                 <div className="sm:flex sm:items-center sm:justify-between">
-                    <a href="https://flowbite.com/" className="flex items-center mb-4 sm:mb-0 space-x-3 rtl:space-x-reverse">
-                        <Link to="/" className="ml-2 text-xl text-neutral-800 dark:text-neutral-200">
-                            <img src="https://www.fatima.edu.ph/wp-content/uploads/2021/10/olfu-logo.png" alt="logo" />
-                        </Link>
-                    </a>
+
+                    <Link to="/" className="ml-2 text-xl text-neutral-800 dark:text-neutral-200">
+                        <img src="https://www.fatima.edu.ph/wp-content/uploads/2021/10/olfu-logo.png" alt="logo" />
+                    </Link>
                     <ul className="flex flex-wrap items-center mb-6 text-sm font-medium text-white sm:mb-0">
                         <li>
-                            <a href="#" className="hover:underline me-4 md:me-6">About</a>
+                            <Link to={""} className="hover:underline me-4 md:me-6">About</Link>
                         </li>
                         <li>
-                            <a href="#" className="hover:underline me-4 md:me-6">Privacy Policy</a>
+                            <Link to={""} className="hover:underline me-4 md:me-6">Privacy Policy</Link>
                         </li>
                         <li>
-                            <a href="#" className="hover:underline me-4 md:me-6">Courses</a>
+                            <Link to={""} className="hover:underline me-4 md:me-6">Courses</Link>
                         </li>
                         <li>
-                            <a href="#" className="hover:underline">Contact</a>
+                            <Link to={""} className="hover:underline">Contact</Link>
                         </li>
                     </ul>
                 </div>

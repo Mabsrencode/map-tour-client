@@ -83,7 +83,7 @@ const Map = ({ onMarkerDragEnd, disabled, loading }) => {
             {!disabled && <i className="fa-solid fa-location-dot marker" id="marker"
                 ref={markerRef} style={{ left: '50px', top: '50px' }}></i>}
             {data.length > 0 && data.map((mark) => (
-                <Link key={mark._id} to={`map/view/${mark._id}`}>
+                <Link key={mark._id} to={`/map/view/${mark._id}`}>
                     <h1 style={{ left: `${mark.location.x + -40}px`, top: `${mark.location.y + -30}px` }} className='absolute bg-primary text-white px-2 rounded-lg'>{mark.title}</h1>
                     <i className="fa-solid fa-map-pin marker posted" style={{ left: `${mark.location.x}px`, top: `${mark.location.y}px` }}></i>
                 </Link>

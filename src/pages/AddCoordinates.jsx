@@ -1,51 +1,55 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import axios from 'axios';
-import Map from '../components/Map/Map'
-import FileBase from "react-file-base64"
+import Map from '../components/Map/Map';
+import FileBase from "react-file-base64";
+
 const AddCoordinates = () => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
-    const [image, setImage] = useState('');
+    const [images, setImages] = useState([]);
     const [location, setLocation] = useState({});
     const [isLoading, setIsLoading] = useState(false);
+
     const handleMarkerDragEnd = (coordinates) => {
-        setLocation(coordinates)
+        setLocation(coordinates);
     };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             setIsLoading(true);
-            await axios.post('http://localhost:4000/map/add' || "https://olfu-server.onrender.com/map/add", {
+            await axios.post('http://localhost:4000/map/add', {
                 title,
                 description,
-                image: image.base64,
+                images: images.map(img => img.base64), // Send only base64 data
                 location
             });
             setIsLoading(false);
+            window.location.reload();
         } catch (error) {
             setIsLoading(false);
             console.error('Error creating location:', error.message);
         }
     };
+
     return (
         <section className='flex gap-6 justify-between my-[5%]'>
             <div className='w-full'>
                 <div className="rounded-lg bg-primary p-4 lg:p-8 shadow-2xl">
-
                     <div className="-mx-2 md:items-center md:flex">
                         <div className="flex-1 px-2">
                             <label className="block mb-2 text-sm font-semibold text-white">Title</label>
-                            <input required value={title} onChange={(e) => setTitle(e.target.value)} type="text" placeholder="Title" className="block w-full px-5 py-2.5 mt-2 placeholder-gray-400 bg-white border border-neutral-gray-light rounded-lg dark:placeholder-gray-600   focus:ring-primary-light focus:outline-none focus:ring" />
+                            <input required value={title} onChange={(e) => setTitle(e.target.value)} type="text" placeholder="Title" className="block w-full px-5 py-2.5 mt-2 placeholder-gray-400 bg-white border border-neutral-gray-light rounded-lg dark:placeholder-gray-600 focus:ring-primary-light focus:outline-none focus:ring" />
                         </div>
                     </div>
                     <div className="-mx-2 mt-2 md:items-center md:flex">
                         <div className="flex-1 px-2 mt-4 md:mt-0">
                             <label className="block mb-2 text-sm font-semibold text-white">Description</label>
-                            <textarea cols="30" rows="10" required value={description} onChange={(e) => setDescription(e.target.value)} type="text" placeholder="Description" className="block w-full px-5 py-2.5 mt-2 placeholder-gray-400 bg-white border border-neutral-gray-light rounded-lg dark:placeholder-gray-600   focus:ring-primary-light focus:outline-none focus:ring" />
+                            <textarea cols="30" rows="10" required value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Description" className="block w-full px-5 py-2.5 mt-2 placeholder-gray-400 bg-white border border-neutral-gray-light rounded-lg dark:placeholder-gray-600 focus:ring-primary-light focus:outline-none focus:ring" />
                         </div>
                     </div>
                     <div className="-mx-2 mt-2 md:items-center md:flex">
-                        <FileBase multiple={false} name='selectedFile' type="file" onDone={({ base64 }) => setImage({ base64 })} />
+                        <FileBase multiple={true} onDone={(files) => setImages(files)} />
                     </div>
                     <button disabled={isLoading} onClick={handleSubmit} className={`${isLoading && "opacity-50"} w-full px-6 py-3 mt-4 font-medium tracking-wide text-black capitalize transition-colors duration-300 transform bg-white rounded-full`}>
                         {isLoading ? (
@@ -64,7 +68,7 @@ const AddCoordinates = () => {
                 <Map onMarkerDragEnd={handleMarkerDragEnd} disabled={false} />
             </div>
         </section>
-    )
-}
+    );
+};
 
-export default AddCoordinates
+export default AddCoordinates;

@@ -1,6 +1,25 @@
-import React from 'react'
+import axios from 'axios';
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import LogoutButton from '../LogoutButton/LogoutButton';
 const Header = () => {
+    const [user, setUser] = useState();
+    const verifyCookie = () => {
+        axios.post(
+            "http://localhost:4000/auth",
+            {},
+            { withCredentials: true }
+        )
+            .then(response => {
+                setUser(response.data.status);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    };
+    useEffect(() => {
+        verifyCookie();
+    }, [user]);
     return (
         <div>
             <nav
@@ -10,10 +29,12 @@ const Header = () => {
                     <Link to="/" className="ml-2 text-xl text-neutral-800 dark:text-neutral-200">
                         <img src="https://www.fatima.edu.ph/wp-content/uploads/2021/10/olfu-logo.png" alt="logo" />
                     </Link>
-                    <div className="ml-5 flex w-[20%] items-center justify-between">
+                    <div className="ml-5 flex items-center justify-between gap-6">
+                        {user && <Link to={"/dashboard"} className="text-center lg:text-base text-white md:font-semibold hover:opacity-75 md:focus:text-primary-dark" >Dashboard</Link>}
+                        {user && <Link to={"/admin-create-account"} className="text-center lg:text-base text-white md:font-semibold hover:opacity-75 md:focus:text-primary-dark" >Create Account</Link>}
                         <input
                             type="search"
-                            className="relative m-0 block w-[1px] min-w-0 flex-auto rounded  bg-slate-200 bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-neutral-700  transition duration-200 outline-none border-none ease-in-out focus:z-[3] focus:text-neutral-700 focus:shadow-[inset_0_0_0_1px_rgb(59,113,202)]  motion-reduce:transition-none "
+                            className="relative m-0 block  w-[300px] flex-auto rounded  bg-slate-200 bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-neutral-700  transition duration-200 outline-none border-none ease-in-out focus:z-[3] focus:text-neutral-700 focus:shadow-[inset_0_0_0_1px_rgb(59,113,202)]  motion-reduce:transition-none"
                             placeholder="Search"
                             aria-label="Search"
                             aria-describedby="button-addon2" />
@@ -31,6 +52,7 @@ const Header = () => {
                                     clipRule="evenodd" />
                             </svg>
                         </span>
+                        {user && <LogoutButton />}
                     </div>
                 </div>
             </nav>

@@ -5,6 +5,9 @@ import Home from "./pages/Home";
 import NoPage from "./pages/NoPage";
 import AddCoordinates from "./pages/AddCoordinates";
 import View from "./pages/View";
+import { UserProvider } from "./context/useContext";
+import SignInAdmin from "./pages/SignInAdmin";
+import AdminDashboardCreate from "./pages/AdminDashboardCreate";
 function App() {
   return (
     <div className="App">
@@ -12,7 +15,14 @@ function App() {
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
-            <Route path="/add" element={<AddCoordinates />} />
+            <Route element={<UserProvider />}>
+              <Route
+                path="/admin-create-account"
+                element={<AdminDashboardCreate />}
+              />
+              <Route path="/dashboard" element={<AddCoordinates />} />
+            </Route>
+            <Route path="/sign-in-as-admin" element={<SignInAdmin />} />
             <Route path="/map/view/:_id" element={<View />} />
             <Route path="*" element={<NoPage />} />
           </Route>
