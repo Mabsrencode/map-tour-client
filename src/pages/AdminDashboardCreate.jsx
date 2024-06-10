@@ -16,13 +16,13 @@ const AdminDashboardCreate = () => {
                 {},
                 { withCredentials: true }
             );
-            console.log(data.role !== "super_admin")
+            // console.log(data.role !== "super_admin")
             if (data.role !== "super_admin") {
                 navigate("/sign-in-as-admin");
             }
         };
         verifyCookie();
-    }, []);
+    }, [navigate]);
     // useEffect(() => {
     //     const fetchData = async () => {
     //         try {

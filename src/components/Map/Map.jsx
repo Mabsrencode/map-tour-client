@@ -2,21 +2,26 @@ import React, { useRef, useEffect, useState } from 'react';
 import axios from 'axios';
 import "./map.css";
 import { Link } from "react-router-dom";
+import logo from "../../assets/olfu-program-logo.png"
 import map from "../../assets/olfu-map.png"
-const Map = ({ onMarkerDragEnd, disabled, loading }) => {
+const Map = ({ onMarkerDragEnd, disabled, loading, isAdmin }) => {
     const [data, setData] = useState([]);
-
+    const [gettingLocation, setGettingLocation] = useState(false);
     useEffect(() => {
         const getCoordinate = async () => {
             try {
+                setGettingLocation(true);
                 const response = await axios.get('http://localhost:4000/map/coordinate' || "https://olfu-server.onrender.com/map/coordinate");
                 setData(response.data);
+                setGettingLocation(false);
             } catch (error) {
+                setGettingLocation(false);
                 console.error('Error fetching data:', error.message);
             }
         };
         getCoordinate();
     }, []);
+
     const markerRef = useRef(null);
     const dragElement = (elmnt) => {
         let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
@@ -73,17 +78,17 @@ const Map = ({ onMarkerDragEnd, disabled, loading }) => {
 
     return (
         <div className="map-container p-4 border border-4 border-primary rounded-lg bg-white shadow-2xl relative">
-            {loading ? <div className='loading h-full w-full rounded-lg'>
-                <img src="https://www.fatima.edu.ph/wp-content/uploads/2021/10/olfu-program-logo.png" alt="" />
+            {loading || gettingLocation ? <div className='loading h-full w-full rounded-lg animate-pulse'>
+                <img src={logo} alt="" />
             </div> : <img
                 src={map}
                 alt="Map"
                 className="map-image rounded-lg"
             />}
-            {!disabled && <i className="fa-solid fa-location-dot marker" id="marker"
+            {!disabled && <i className={`fa-solid fa-location-dot marker ${loading || gettingLocation ? "hidden" : "block"}`} id="marker"
                 ref={markerRef} style={{ left: '50px', top: '50px' }}></i>}
             {data.length > 0 && data.map((mark) => (
-                <Link key={mark._id} to={`/map/view/${mark._id}`}>
+                <Link key={mark._id} to={`${isAdmin ? (`/map/admin/view/${mark._id}`) : (`/map/view/${mark._id}`)}`} className={`${loading || gettingLocation ? "hidden" : "block"}`}>
                     <h1 style={{ left: `${mark.location.x + -40}px`, top: `${mark.location.y + -30}px` }} className='absolute bg-primary text-white px-2 rounded-lg'>{mark.title}</h1>
                     <i className="fa-solid fa-map-pin marker posted" style={{ left: `${mark.location.x}px`, top: `${mark.location.y}px` }}></i>
                 </Link>

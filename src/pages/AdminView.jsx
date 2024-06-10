@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { Carousel } from "@material-tailwind/react";
-const View = () => {
+import { useNavigate, Link } from 'react-router-dom';
+const AdminView = () => {
+    const navigate = useNavigate()
     const [details, setDetails] = useState();
     const [loading, setLoading] = useState(false);
     const { _id } = useParams();
@@ -20,6 +22,15 @@ const View = () => {
         };
         fetch();
     }, [_id]);
+    const handleDelete = async (id) => {
+        try {
+            await axios.delete(`http://localhost:4000/map/delete/${id}`);
+            // setData(data.filter((item) => item._id !== id));
+            navigate("/dashboard");
+        } catch (error) {
+            console.error('Error deleting location:', error.message);
+        }
+    };
     return (
         <section className='py-[5%]'>
             {loading ? <ImagePlacehoderSkeleton /> : details &&
@@ -37,13 +48,15 @@ const View = () => {
                         <p className="mb-3 font-normal text-darkWhite">{details.description}</p>
                     </div>
                 </div>}
-            {
-            }
+            <div>
+                <button className='px-6 py-3 w-full mt-4 font-medium tracking-wide text-white capitalize rounded-xl transition-colors duration-300 transform bg-primary' onClick={() => handleDelete(_id)}>Delete</button>
+                <Link className="px-6 w-full block text-center py-3 mt-4 font-medium tracking-wide text-white capitalize rounded-xl transition-colors duration-300 transform bg-primary" to={`/map/edit/${_id}`}>Edit</Link>
+            </div>
         </section>
     )
 }
 
-export default View
+export default AdminView
 
 export function ImagePlacehoderSkeleton() {
     return (

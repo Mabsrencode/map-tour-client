@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { useNavigate, Outlet } from "react-router-dom";
 import { useCookies } from "react-cookie";
-
+import logo from "../assets/olfu-program-logo.png";
 import axios from "axios";
 // User Context
 const UserContext = createContext();
@@ -10,7 +10,6 @@ export const UserProvider = () => {
   const navigate = useNavigate();
   const [cookies, removeCookie] = useCookies([]);
   const [user, setUser] = useState();
-  console.log(user);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
     const verifyCookie = async () => {
@@ -38,12 +37,8 @@ export const UserProvider = () => {
   return (
     <UserContext.Provider value={user}>
       {loading ? (
-        <div className="flex justify-center items-center h-[80vh]">
-          <img
-            className="h-[150px] w-[150px]"
-            src="https://www.fatima.edu.ph/wp-content/uploads/2021/10/olfu-program-logo.png"
-            alt=""
-          />
+        <div className="flex justify-center items-center h-[80vh] animate-pulse">
+          <img className="h-[150px] w-[150px]" src={logo} alt="" />
         </div>
       ) : (
         <Outlet />

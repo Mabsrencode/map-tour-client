@@ -2,7 +2,12 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import LogoutButton from '../LogoutButton/LogoutButton';
+import FetchDataQuery from '../../middleware/FetchDataQuery';
 const Header = () => {
+    const [searchData, setSearchData] = useState();
+    console.log(searchData)
+    const [searchDataValue, setSearchDataValue] = useState();
+    const [loadingSearch, setLoadingSearch] = useState(false);
     const [user, setUser] = useState();
     const verifyCookie = () => {
         axios.post(
@@ -20,6 +25,21 @@ const Header = () => {
     useEffect(() => {
         verifyCookie();
     }, [user]);
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                setLoadingSearch(true);
+                const response = (await FetchDataQuery("http://localhost:4000/map/search?query=", searchData)).data;
+                console.log(response)
+                setSearchDataValue(response);
+                setLoadingSearch(false)
+            } catch (error) {
+                console.log(error)
+                setLoadingSearch(false)
+            }
+        }
+        fetchData();
+    }, [searchData]);
     return (
         <div>
             <nav
@@ -29,15 +49,38 @@ const Header = () => {
                     <Link to="/" className="ml-2 text-xl text-neutral-800 dark:text-neutral-200">
                         <img src="https://www.fatima.edu.ph/wp-content/uploads/2021/10/olfu-logo.png" alt="logo" />
                     </Link>
-                    <div className="ml-5 flex items-center justify-between gap-6">
+                    <div className="ml-5 flex items-center justify-between gap-6 relative">
                         {user && <Link to={"/dashboard"} className="text-center lg:text-base text-white md:font-semibold hover:opacity-75 md:focus:text-primary-dark" >Dashboard</Link>}
                         {user && <Link to={"/admin-create-account"} className="text-center lg:text-base text-white md:font-semibold hover:opacity-75 md:focus:text-primary-dark" >Create Account</Link>}
                         <input
+                            onChange={(e) => setSearchData(e.target.value)}
                             type="search"
                             className="relative m-0 block  w-[300px] flex-auto rounded  bg-slate-200 bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-neutral-700  transition duration-200 outline-none border-none ease-in-out focus:z-[3] focus:text-neutral-700 focus:shadow-[inset_0_0_0_1px_rgb(59,113,202)]  motion-reduce:transition-none"
                             placeholder="Search"
                             aria-label="Search"
                             aria-describedby="button-addon2" />
+                        {searchData?.length > 0 &&
+                            <ul id='search-result' className={` absolute w-full z-30 top-24 -left-[1px] bg-primary max-h-[300px] overflow-y-scroll rounded-xl shadow-lg`}>
+                                {loadingSearch ? (
+                                    <p className='px-6 py-2 font-semibold text-xs text-white'>Searching...</p>
+                                ) : (
+                                    <>
+                                        {searchDataValue.length > 0 ? (
+                                            searchDataValue.map((search) => (
+                                                <Link to={`/map/view/${search._id}`} key={search._id}>
+                                                    <li className='px-6 py-2 transition-all hover:opacity-[0.7]'>
+                                                        <span className='text-white'>{search.title}</span>
+
+                                                    </li>
+                                                </Link>
+                                            ))
+                                        ) : (
+                                            <p className='px-6 py-2 font-semibold text-xs text-white'>No search found.</p>
+                                        )}
+                                    </>
+                                )}
+                            </ul>
+                        }
                         <span
                             className="input-group-text flex items-center whitespace-nowrap rounded px-3 py-1.5 text-center text-base font-normal text-neutral-700 dark:text-neutral-200"
                             id="basic-addon2">

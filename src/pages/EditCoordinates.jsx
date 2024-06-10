@@ -1,14 +1,35 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import Map from '../components/Map/Map';
-import FileBase from "react-file-base64";
 
-const AddCoordinates = () => {
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useParams, useNavigate } from 'react-router-dom';
+import FileBase from "react-file-base64";
+import Map from '../components/Map/Map';
+
+const EditCoordinates = () => {
+    const { _id } = useParams();
+    const history = useNavigate();
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [images, setImages] = useState([]);
     const [location, setLocation] = useState({});
     const [isLoading, setIsLoading] = useState(false);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = (await axios.post(`http://localhost:4000/map/view/${_id}` || `https://olfu-server.onrender.com/map/view/${_id}`)).data;
+                console.log(response)
+                const { title, description, images, location } = response;
+                setTitle(title);
+                setDescription(description);
+                setImages(images);
+                setLocation(location);
+            } catch (error) {
+                console.error('Error fetching data:', error.message);
+            }
+        };
+        fetchData();
+    }, [_id]);
 
     const handleMarkerDragEnd = (coordinates) => {
         setLocation(coordinates);
@@ -18,17 +39,17 @@ const AddCoordinates = () => {
         e.preventDefault();
         try {
             setIsLoading(true);
-            await axios.post('http://localhost:4000/map/add', {
+            await axios.patch(`http://localhost:4000/map/update/${_id}`, {
                 title,
                 description,
-                images: images.map(img => img.base64), // Send only base64 data
+                images: images.map(img => img.base64),
                 location
             });
             setIsLoading(false);
-            window.location.reload();
+            history('/dashboard');
         } catch (error) {
             setIsLoading(false);
-            console.error('Error creating location:', error.message);
+            console.error('Error updating location:', error.message);
         }
     };
 
@@ -60,15 +81,15 @@ const AddCoordinates = () => {
                                 </svg>
                                 Processing...
                             </>
-                        ) : "Save Location"}
+                        ) : "Save Changes"}
                     </button>
                 </div>
             </div>
             <div>
-                <Map onMarkerDragEnd={handleMarkerDragEnd} disabled={false} isAdmin={true} />
+                <Map onMarkerDragEnd={handleMarkerDragEnd} disabled={false} />
             </div>
         </section>
     );
 };
 
-export default AddCoordinates;
+export default EditCoordinates;
