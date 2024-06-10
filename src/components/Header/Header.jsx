@@ -40,6 +40,9 @@ const Header = () => {
         }
         fetchData();
     }, [searchData]);
+    const clearValueOnClicks = () => {
+        setSearchData("")
+    };
     return (
         <div>
             <nav
@@ -67,7 +70,7 @@ const Header = () => {
                                     <>
                                         {searchDataValue.length > 0 ? (
                                             searchDataValue.map((search) => (
-                                                <Link to={`/map/view/${search._id}`} key={search._id}>
+                                                <Link to={`/map/view/${search._id}`} key={search._id} onClick={clearValueOnClicks}>
                                                     <li className='px-6 py-2 transition-all hover:opacity-[0.7]'>
                                                         <span className='text-white'>{search.title}</span>
 
@@ -87,7 +90,7 @@ const Header = () => {
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 viewBox="0 0 20 20"
-                                fill="currentColor"
+                                fill="white"
                                 className="h-5 w-5">
                                 <path
                                     fillRule="evenodd"
