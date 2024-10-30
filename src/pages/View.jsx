@@ -10,7 +10,7 @@ const View = () => {
         const fetch = async () => {
             try {
                 setLoading(true);
-                const response = (await axios.post(`http://localhost:4000/map/view/${_id}` || `https://olfu-server.onrender.com/map/view/${_id}`)).data;
+                const response = (await axios.post(`/map/view/${_id}` || `https://olfu-server.onrender.com/map/view/${_id}`)).data;
                 setDetails(response)
             } catch (error) {
                 console.error('Error fetching data:', error.message);

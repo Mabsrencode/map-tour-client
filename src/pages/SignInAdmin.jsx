@@ -13,7 +13,7 @@ const SignInAdmin = () => {
         setIsLoading(true);
 
         try {
-            await axios.post('http://localhost:4000/auth/login', {
+            await axios.post('/auth/login', {
                 username,
                 password
             }, { withCredentials: true });

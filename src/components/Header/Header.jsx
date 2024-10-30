@@ -11,7 +11,7 @@ const Header = () => {
     const [user, setUser] = useState();
     const verifyCookie = () => {
         axios.post(
-            "http://localhost:4000/auth",
+            "/auth",
             {},
             { withCredentials: true }
         )
@@ -29,7 +29,7 @@ const Header = () => {
         const fetchData = async () => {
             try {
                 setLoadingSearch(true);
-                const response = (await FetchDataQuery("http://localhost:4000/map/search?query=", searchData)).data;
+                const response = (await FetchDataQuery("/map/search?query=", searchData)).data;
                 console.log(response)
                 setSearchDataValue(response);
                 setLoadingSearch(false)

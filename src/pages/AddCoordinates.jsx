@@ -18,7 +18,7 @@ const AddCoordinates = () => {
         e.preventDefault();
         try {
             setIsLoading(true);
-            await axios.post('http://localhost:4000/map/add', {
+            await axios.post('/map/add', {
                 title,
                 description,
                 images: images.map(img => img.base64), // Send only base64 data

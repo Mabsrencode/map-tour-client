@@ -17,7 +17,7 @@ const EditCoordinates = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = (await axios.post(`http://localhost:4000/map/view/${_id}` || `https://olfu-server.onrender.com/map/view/${_id}`)).data;
+                const response = (await axios.post(`/map/view/${_id}` || `https://olfu-server.onrender.com/map/view/${_id}`)).data;
                 console.log(response)
                 const { title, description, images, location } = response;
                 setTitle(title);
@@ -39,7 +39,7 @@ const EditCoordinates = () => {
         e.preventDefault();
         try {
             setIsLoading(true);
-            await axios.patch(`http://localhost:4000/map/update/${_id}`, {
+            await axios.patch(`/map/update/${_id}`, {
                 title,
                 description,
                 images: images.map(img => img.base64),

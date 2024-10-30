@@ -9,7 +9,7 @@ const Home = () => {
         const getCoordinate = async () => {
             try {
                 setLoading(true);
-                const response = await axios.get('http://localhost:4000/map/coordinate');
+                const response = await axios.get('/map/coordinate');
                 setData(response.data);
                 setLoading(false);
             } catch (error) {
@@ -23,7 +23,6 @@ const Home = () => {
     return (
         <>
             <section className='hero py-[10%]'>
-                {/* <img src="https://www.fatima.edu.ph/wp-content/uploads/2022/01/olfu-center-logo.png" alt="" className='mx-auto w-[300px]' /> */}
             </section>
             <section>
                 <div className='w-[800px] mx-auto text-center'>

@@ -1,9 +1,10 @@
-import React, { useRef, useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useRef, useEffect, useState } from "react";
+import axios from "axios";
 import "./map.css";
 import { Link } from "react-router-dom";
-import logo from "../../assets/olfu-program-logo.png"
-import map from "../../assets/olfu-map.png"
+import logo from "../../assets/olfu-program-logo.png";
+import map from "../../assets/olfu-map.png";
+import images from "../../constants/images";
 const Map = ({ onMarkerDragEnd, disabled, loading, isAdmin }) => {
     const [data, setData] = useState([]);
     const [gettingLocation, setGettingLocation] = useState(false);
@@ -11,12 +12,12 @@ const Map = ({ onMarkerDragEnd, disabled, loading, isAdmin }) => {
         const getCoordinate = async () => {
             try {
                 setGettingLocation(true);
-                const response = await axios.get('http://localhost:4000/map/coordinate' || "https://olfu-server.onrender.com/map/coordinate");
+                const response = await axios.get("/map/coordinate");
                 setData(response.data);
                 setGettingLocation(false);
             } catch (error) {
                 setGettingLocation(false);
-                console.error('Error fetching data:', error.message);
+                console.error("Error fetching data:", error.message);
             }
         };
         getCoordinate();
@@ -24,7 +25,10 @@ const Map = ({ onMarkerDragEnd, disabled, loading, isAdmin }) => {
 
     const markerRef = useRef(null);
     const dragElement = (elmnt) => {
-        let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+        let pos1 = 0,
+            pos2 = 0,
+            pos3 = 0,
+            pos4 = 0;
 
         const dragMouseDown = (e) => {
             e.preventDefault();
@@ -54,7 +58,7 @@ const Map = ({ onMarkerDragEnd, disabled, loading, isAdmin }) => {
 
             elmnt.style.top = newY + "px";
             elmnt.style.left = newX + "px";
-            onMarkerDragEnd({ x: newX, y: newY })
+            onMarkerDragEnd({ x: newX, y: newY });
         };
 
         const closeDragElement = () => {
@@ -73,31 +77,66 @@ const Map = ({ onMarkerDragEnd, disabled, loading, isAdmin }) => {
         if (markerElement) {
             dragElement(markerElement);
         }
-        // eslint-disable-next-line 
+        // eslint-disable-next-line
     }, []);
 
     return (
-        <div className="map-container p-4 border border-4 border-primary rounded-lg bg-white shadow-2xl relative">
-            {loading || gettingLocation ? <div className='loading h-full w-full rounded-lg animate-pulse'>
-                <img src={logo} alt="" />
-            </div> : <img
-                src={map}
-                alt="Map"
-                className="map-image rounded-lg"
-            />}
-            {!disabled && <i className={`fa-solid fa-location-dot marker ${loading || gettingLocation ? "hidden" : "block"}`} id="marker"
-                ref={markerRef} style={{ left: '50px', top: '50px' }}></i>}
-            {data.length > 0 && data.map((mark) => (
-                <Link key={mark._id} to={`${isAdmin ? (`/map/admin/view/${mark._id}`) : (`/map/view/${mark._id}`)}`} className={`${loading || gettingLocation ? "hidden" : "block"}`}>
-                    <h1 style={{ left: `${mark.location.x + -40}px`, top: `${mark.location.y + -30}px` }} className='absolute bg-primary text-white px-2 rounded-lg'>{mark.title}</h1>
-                    <i className="fa-solid fa-map-pin marker posted" style={{ left: `${mark.location.x}px`, top: `${mark.location.y}px` }}></i>
-                </Link>
-            ))}
+        <div className="relative map-container p-4 border border-4 border-primary rounded-lg bg-white shadow-2xl">
+            {loading || gettingLocation ? (
+                <div className="loading h-full w-full rounded-lg animate-pulse">
+                    <img src={logo} alt="" />
+                </div>
+            ) : (
+                <img src={map} alt="Map" className="map-image rounded-lg" />
+            )}
+            {!disabled && (
+                <i
+                    className={`fa-solid fa-location-dot marker ${loading || gettingLocation ? "hidden" : "block"
+                        }`}
+                    id="marker"
+                    ref={markerRef}
+                    style={{ left: "50px", top: "50px" }}
+                ></i>
+            )}
+            {data.length > 0 &&
+                data.map((mark) => (
+                    <Link
+                        key={mark._id}
+                        to={`${isAdmin ? `/map/admin/view/${mark._id}` : `/map/view/${mark._id}`
+                            }`}
+                        className={`${loading || gettingLocation ? "hidden" : "block"}`}
+                    >
+                        <h1
+                            style={{
+                                left: `${mark.location.x + -40}px`,
+                                top: `${mark.location.y + -30}px`,
+                            }}
+                            className="absolute bg-primary text-white px-2 rounded-lg"
+                        >
+                            {mark.title}
+                        </h1>
+                        <i
+                            className="fa-solid fa-map-pin marker posted"
+                            style={{
+                                left: `${mark.location.x}px`,
+                                top: `${mark.location.y}px`,
+                            }}
+                        ></i>
+                    </Link>
+                ))}
+            <img src={images.bldg1} style={{
+                filter: 'drop-shadow(0px 0px 10px yellow)',
+            }} alt="" className="cursor-pointer absolute bottom-[95px] right-[133px] w-[360px] opacity-0 hover:opacity-100 outline-image" />
+
+            <img src={images.bldg2} style={{
+                filter: 'drop-shadow(0px 0px 10px yellow)',
+            }} alt="" className="cursor-pointer absolute bottom-[184px] right-[261px] w-[360px] opacity-0 hover:opacity-100" />
+            {/* <img src={images.bldg3} alt="" className="absolute" />
+            <img src={images.bldg4} alt="" className="absolute" />
+            <img src={images.bldg5} alt="" className="absolute" />
+            <img src={images.bldg6} alt="" className="absolute" /> */}
         </div>
     );
-}
+};
 
 export default Map;
-
-
-

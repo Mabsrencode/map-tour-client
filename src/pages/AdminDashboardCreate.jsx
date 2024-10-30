@@ -12,7 +12,7 @@ const AdminDashboardCreate = () => {
     useEffect(() => {
         const verifyCookie = async () => {
             const { data } = await axios.post(
-                "http://localhost:4000/auth",
+                "/auth",
                 {},
                 { withCredentials: true }
             );
@@ -26,7 +26,7 @@ const AdminDashboardCreate = () => {
     // useEffect(() => {
     //     const fetchData = async () => {
     //         try {
-    //             const data = (await axios.get("http://localhost:4000/admin/all-users")).data;
+    //             const data = (await axios.get("/admin/all-users")).data;
     //             setAdmin(data);
     //         } catch (error) {
     //             console.log(error);
@@ -45,7 +45,7 @@ const AdminDashboardCreate = () => {
         } else {
             try {
                 setIsLoading(true);
-                const response = await axios.post('http://localhost:4000/auth/register', {
+                const response = await axios.post('/auth/register', {
                     username,
                     email,
                     password
